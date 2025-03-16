@@ -22,6 +22,11 @@ public class BotController : ControllerBase
     }
 
     
+    /// <summary>
+    /// Ручка для отправки напоминания-сообщения с сервера
+    /// </summary>
+    /// <param name="request">Кому и что отправить</param>
+    /// <returns>Успешность отправки</returns>
     [HttpPost("send-message")]
     public async Task<IActionResult> SendMessage([FromBody] SendMessageRequest? request)
     {

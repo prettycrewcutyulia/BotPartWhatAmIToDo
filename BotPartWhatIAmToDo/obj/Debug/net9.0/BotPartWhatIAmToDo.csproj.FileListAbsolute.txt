@@ -74,3 +74,4 @@
 /Users/prettycrewcut/RiderProjects/BotPartWhatAmIToDo/BotPartWhatIAmToDo/obj/Debug/net9.0/BotPartWhatIAmToDo.pdb
 /Users/prettycrewcut/RiderProjects/BotPartWhatAmIToDo/BotPartWhatIAmToDo/obj/Debug/net9.0/BotPartWhatIAmToDo.genruntimeconfig.cache
 /Users/prettycrewcut/RiderProjects/BotPartWhatAmIToDo/BotPartWhatIAmToDo/obj/Debug/net9.0/ref/BotPartWhatIAmToDo.dll
+/Users/prettycrewcut/RiderProjects/BotPartWhatAmIToDo/BotPartWhatIAmToDo/obj/Debug/net9.0/BotPartWhatIAmToDo.sourcelink.json

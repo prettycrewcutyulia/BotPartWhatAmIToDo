@@ -1,9 +1,11 @@
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using System.Text;
+using System.Text.Json;
 
 public class BotUpdateHandler
 {
-    private static readonly HttpClient httpClient = new HttpClient();
+    private static readonly HttpClient httpClient = new();
 
     public static async Task Update(ITelegramBotClient client, Update update, CancellationToken token)
     {
@@ -19,7 +21,8 @@ public class BotUpdateHandler
                 Console.WriteLine($"ChatId: {chatId}");
 
                 // Отправляем запрос на сервер
-                string serverResponse = await SendRequestToServer(startParam);
+                SendRequestToServerModel model = new SendRequestToServerModel(chatId, chatId);
+                string serverResponse = await SendRequestToServer(model);
 
                 // Обрабатываем ответ сервера
                 if (serverResponse == "OK")
@@ -50,21 +53,26 @@ public class BotUpdateHandler
         }
     }
 
-    private static async Task<string> SendRequestToServer(string parameter)
+    private static async Task<string> SendRequestToServer(SendRequestToServerModel request)
     {
-
-        return "OK";
         try
         {
-            // Пример URL, замените на ваш реальный URL и добавьте нужные параметры
-            string url = $"https://example.com/api/verify?param={parameter}";
-            var response = await httpClient.GetAsync(url);
+            string url = Environment.GetEnvironmentVariable("SERVER_URL");
+
+            // Сериализуйте запрос в JSON
+            var jsonContent = JsonSerializer.Serialize(request);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            // Отправьте POST-запрос
+            var response = await httpClient.PostAsync(url, content);
 
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadAsStringAsync();
             }
-            return "Ошибка";
+
+            // Вернуть содержимое ошибки для дополнительной информации
+            return "Ошибка: " + await response.Content.ReadAsStringAsync();
         }
         catch (HttpRequestException ex)
         {
