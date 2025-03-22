@@ -19,7 +19,7 @@ public class BotUpdateHandler
             if (parts.Length > 1)
             {
                 string startParam = parts[1];
-                string chatId = message.Chat.Id.ToString();
+                long chatId = message.Chat.Id;
                 Console.WriteLine($"Получен параметр запуска: {startParam}");
                 Console.WriteLine($"ChatId: {chatId}");
 
