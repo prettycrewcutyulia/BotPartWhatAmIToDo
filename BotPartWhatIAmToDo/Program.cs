@@ -2,12 +2,12 @@ using Telegram.Bot;
 using Telegram.Bot.Polling;
 using DotNetEnv;
 using Microsoft.OpenApi.Models;
+using ServerPartWhatAmItOdO;
 
 class Program
 {
     static void Main(string[] args)
     {
-        startup(args);
         // Получите токен из переменных окружения
         Env.Load();
         string token = Environment.GetEnvironmentVariable("TELEGRAM_BOT_TOKEN");
@@ -18,7 +18,7 @@ class Program
         using var cts = new CancellationTokenSource();
         var client = new TelegramBotClient(token, cancellationToken: cts.Token);
         client.StartReceiving(BotUpdateHandler.Update, Error);
-        Console.ReadLine();
+        startup(args);
     }    
 
     private static async Task Error(ITelegramBotClient client, Exception exception, HandleErrorSource source, CancellationToken token)

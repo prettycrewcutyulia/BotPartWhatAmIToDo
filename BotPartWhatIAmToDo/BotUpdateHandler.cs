@@ -1,7 +1,8 @@
+using ServerPartWhatAmItOdO.Models;
 using Telegram.Bot;
 using Telegram.Bot.Types;
-using System.Text;
-using System.Text.Json;
+
+namespace ServerPartWhatAmItOdO;
 
 public class BotUpdateHandler
 {
@@ -10,7 +11,7 @@ public class BotUpdateHandler
     public static async Task Update(ITelegramBotClient client, Update update, CancellationToken token)
     {
         var message = update.Message;
-        if (message != null && message.Text != null && message.Text.StartsWith("/start"))
+        if (message is { Text: not null } && message.Text.StartsWith("/start"))
         {
             string[] parts = message.Text.Split(" ");
             if (parts.Length > 1)
@@ -21,11 +22,11 @@ public class BotUpdateHandler
                 Console.WriteLine($"ChatId: {chatId}");
 
                 // Отправляем запрос на сервер
-                SendRequestToServerModel model = new SendRequestToServerModel(chatId, chatId);
-                string serverResponse = await SendRequestToServer(model);
+                SendRequestToServerModel model = new SendRequestToServerModel(chatId, startParam);
+                bool serverResponse = await SendRequestToServer(model);
 
                 // Обрабатываем ответ сервера
-                if (serverResponse == "OK")
+                if (serverResponse)
                 {
                     await client.SendMessage(
                         chatId: message.Chat.Id,
@@ -53,31 +54,41 @@ public class BotUpdateHandler
         }
     }
 
-    private static async Task<string> SendRequestToServer(SendRequestToServerModel request)
+    private static async Task<bool> SendRequestToServer(SendRequestToServerModel request)
     {
+        Console.WriteLine("Ky");
         try
         {
+            DotNetEnv.Env.Load();
             string url = Environment.GetEnvironmentVariable("SERVER_URL");
+            // Получение токена доступа (предположительно из переменных окружения)
+            string accessToken = Environment.GetEnvironmentVariable("ACCESS_TOKEN");
+            
+            if (httpClient.DefaultRequestHeaders.Contains("Authorization"))
+            {
+                httpClient.DefaultRequestHeaders.Remove("Authorization");
+            }
+            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
 
-            // Сериализуйте запрос в JSON
-            var jsonContent = JsonSerializer.Serialize(request);
-            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            // Построение строки запроса
+            // Построение полного URL с параметрами
+            var urlWithParams = $"{url}?email={Uri.EscapeDataString(request.Gmail)}";
 
-            // Отправьте POST-запрос
-            var response = await httpClient.PostAsync(url, content);
+            // Выполнение GET-запроса
+            var response = await httpClient.GetAsync(urlWithParams);
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadAsStringAsync();
+                return true;
             }
 
             // Вернуть содержимое ошибки для дополнительной информации
-            return "Ошибка: " + await response.Content.ReadAsStringAsync();
+            return false;
         }
         catch (HttpRequestException ex)
         {
             Console.WriteLine($"Ошибка при отправке запроса: {ex.Message}");
-            return "Ошибка";
+            return false;
         }
     }
 }

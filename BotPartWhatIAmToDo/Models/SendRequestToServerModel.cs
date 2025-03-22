@@ -1,3 +1,5 @@
+namespace ServerPartWhatAmItOdO.Models;
+
 public struct SendRequestToServerModel
 {
     public string ChatId { get; set; }
