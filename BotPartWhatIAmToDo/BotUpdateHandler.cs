@@ -1,3 +1,5 @@
+using System.Text;
+using Newtonsoft.Json;
 using ServerPartWhatAmItOdO.Models;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -69,13 +71,13 @@ public class BotUpdateHandler
                 httpClient.DefaultRequestHeaders.Remove("Authorization");
             }
             httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+            
+            // Сериализация объекта запроса в JSON
+            var json = JsonConvert.SerializeObject(request);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            // Построение строки запроса
-            // Построение полного URL с параметрами
-            var urlWithParams = $"{url}?email={Uri.EscapeDataString(request.Gmail)}";
-
-            // Выполнение GET-запроса
-            var response = await httpClient.GetAsync(urlWithParams);
+            // Выполнение PUT-запроса
+            var response = await httpClient.PutAsync(url, content);
 
             if (response.IsSuccessStatusCode)
             {
