@@ -49,7 +49,7 @@ public class BotUpdateHandler
             {
                 await client.SendMessage(
                     chatId: message.Chat.Id,
-                    text: "Укажите параметр для команды /start.",
+                    text: "Укажите параметр для команды /start. Email с которым вы зарегистрировались. Пример: /start example@example.com",
                     cancellationToken: token
                 );
             }
