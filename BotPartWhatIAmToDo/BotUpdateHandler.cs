@@ -58,7 +58,6 @@ public class BotUpdateHandler
 
     private static async Task<bool> SendRequestToServer(SendRequestToServerModel request)
     {
-        Console.WriteLine("Ky");
         try
         {
             DotNetEnv.Env.Load();

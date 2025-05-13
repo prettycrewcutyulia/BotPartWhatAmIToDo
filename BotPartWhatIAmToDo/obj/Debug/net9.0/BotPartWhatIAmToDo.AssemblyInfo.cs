@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BotPartWhatIAmToDo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cddc190cd3f2b44104ac0adad0ef24389397e2be")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d20cfee3b122e078625b10ac082e308fe95b0835")]
 [assembly: System.Reflection.AssemblyProductAttribute("BotPartWhatIAmToDo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BotPartWhatIAmToDo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
